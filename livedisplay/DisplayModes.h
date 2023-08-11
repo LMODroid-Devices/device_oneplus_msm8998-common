@@ -7,9 +7,6 @@
 #ifndef VENDOR_LINEAGE_LIVEDISPLAY_V2_0_DISPLAYMODES_H
 #define VENDOR_LINEAGE_LIVEDISPLAY_V2_0_DISPLAYMODES_H
 
-#include <hidl/MQDescriptor.h>
-#include <hidl/Status.h>
-#include <livedisplay/sdm/SDMController.h>
 #include <vendor/lineage/livedisplay/2.0/IDisplayModes.h>
 #include <map>
 
@@ -25,7 +22,7 @@ using ::android::sp;
 
 class DisplayModes : public IDisplayModes {
   public:
-    DisplayModes(std::shared_ptr<V2_0::sdm::SDMController> controller);
+    DisplayModes();
 
     using DisplayModeSetCallback = std::function<void()>;
     inline void registerDisplayModeSetCallback(DisplayModeSetCallback callback) {
@@ -39,12 +36,7 @@ class DisplayModes : public IDisplayModes {
     Return<bool> setDisplayMode(int32_t modeID, bool makeDefault) override;
 
   private:
-    struct ModeInfo {
-        std::string name;
-        std::string node;
-    };
-    static const std::map<int32_t, ModeInfo> kModeMap;
-    std::shared_ptr<V2_0::sdm::SDMController> mController;
+    static const std::map<int32_t, std::string> kModeMap;
     int32_t mCurrentModeId;
     int32_t mDefaultModeId;
     DisplayModeSetCallback mOnDisplayModeSet;
