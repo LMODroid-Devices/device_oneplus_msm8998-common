@@ -16,8 +16,8 @@ import android.os.IBinder;
 import android.os.UserHandle;
 import android.util.Log;
 
-import lineageos.providers.LineageSettings;
-
+import android.provider.Settings;
+import com.libremobileos.providers.LMOSettings;
 public class PocketModeService extends Service {
 
     private static final String TAG = "PocketModeService";
@@ -75,8 +75,8 @@ public class PocketModeService extends Service {
         }
 
         public void register() {
-            getContentResolver().registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.PROXIMITY_ON_WAKE), false, this);
+            getContentResolver().registerContentObserver(Settings.System.getUriFor(
+                    LMOSettings.System.PROXIMITY_ON_WAKE), false, this);
 
             update();
         }
@@ -92,9 +92,9 @@ public class PocketModeService extends Service {
 
         private void update() {
             boolean defaultProximity = getResources().getBoolean(
-                    org.lineageos.platform.internal.R.bool.config_proximityCheckOnWakeEnabledByDefault);
-            boolean proximityWakeCheckEnabled = LineageSettings.System.getIntForUser(
-                    getContentResolver(), LineageSettings.System.PROXIMITY_ON_WAKE, defaultProximity
+                    com.android.internal.R.bool.config_proximityCheckOnWakeEnabledByDefault);
+            boolean proximityWakeCheckEnabled = Settings.System.getIntForUser(
+                    getContentResolver(), LMOSettings.System.PROXIMITY_ON_WAKE, defaultProximity
                     ? 1 : 0, UserHandle.USER_CURRENT) == 1;
 
             if (proximityWakeCheckEnabled) {
