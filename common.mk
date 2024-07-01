@@ -4,6 +4,11 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+# Add common definitions for Qualcomm
+$(call inherit-product, hardware/qcom-caf/common/common.mk)
+
+$(call inherit-product, $(SRC_TARGET_DIR)/product/non_ab_device.mk)
+
 $(call inherit-product, vendor/oneplus/msm8998-common/msm8998-common-vendor.mk)
 
 # Setup dalvik vm configs
@@ -128,6 +133,10 @@ PRODUCT_PACKAGES += \
     libstdc++_vendor \
     vendor.qti.hardware.camera.device@1.0
 
+# Configstore
+PRODUCT_PACKAGES += \
+    disable_configstore
+
 # Display
 PRODUCT_PACKAGES += \
     android.hardware.graphics.allocator@2.0-impl:64 \
@@ -159,10 +168,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.biometrics.fingerprint@2.1-service \
 
-# For android_filesystem_config.h
-PRODUCT_PACKAGES += \
-    fs_config_files
-
 # Framework detect
 PRODUCT_PACKAGES += \
     libqti_vndfwk_detect \
@@ -173,7 +178,8 @@ PRODUCT_PACKAGES += \
 # Gatekeeper HAL
 PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0-impl \
-    android.hardware.gatekeeper@1.0-service
+    android.hardware.gatekeeper@1.0-service \
+    libion.vendor
 
 # GMS
 ifeq ($(WITH_GMS),true)
@@ -202,6 +208,7 @@ PRODUCT_PACKAGES += \
 # HIDL
 PRODUCT_PACKAGES += \
     android.hidl.allocator@1.0.vendor \
+    libhidlmemory.vendor:64 \
     libhidltransport \
     libhidltransport.vendor \
     libhwbinder \
@@ -347,6 +354,8 @@ PRODUCT_PACKAGES += \
     android.hardware.radio.deprecated@1.0.vendor \
     android.hardware.secure_element@1.2.vendor \
     librmnetctl \
+    libsqlite.vendor \
+    libsysutils.vendor \
     libxml2 \
     libprotobuf-cpp-lite-3.9.1-vendorcompat
 
@@ -375,6 +384,7 @@ PRODUCT_PACKAGES += \
     android.frameworks.sensorservice@1.0.vendor \
     android.hardware.sensors@1.0-impl:64 \
     android.hardware.sensors@1.0-service \
+    libpower.vendor \
     libsensorndkbridge
 
 # Shims
@@ -432,6 +442,11 @@ PRODUCT_PACKAGES += \
     wpa_supplicant.conf \
     TetheringConfigOverlay \
     WifiOverlay
+
+# WiFi firmware symlinks
+PRODUCT_PACKAGES += \
+    firmware_wlan_mac.bin_symlink \
+    firmware_WCNSS_qcom_cfg.ini_symlink
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/p2p_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/p2p_supplicant_overlay.conf \
